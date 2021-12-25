@@ -1,31 +1,33 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import * as _ from "lodash";
+import { Provider } from "react-redux";
+import { BrowserRouter as Router } from "react-router-dom";
+import { AppServiceProvider } from "./components/appServiceContext";
 
-import "./styles/main.scss";
-import unmatched from "./assets/unmatched.png";
+import App from "./components/app";
+import ErrorBoundry from "./components/errorBoundry";
+import BookstoreService from "./services/appService";
 
-import CustomComponent from "./components/component.jsx";
+import store from "./store";
 
-const App = () => {
-  const lodashExample = _.partition([1, 2, 3, 4], (n) => n % 2);
+const bookstoreService = new BookstoreService();
 
-  const huskyTest = (text) => console.log(text);
-  huskyTest("huskyTest");
-
+const MainComponent = () => {
   return (
-    <div>
-      <p className="title">Template settings in progress</p>
-      <img src={unmatched} alt="unmatched-logo" />
-      <CustomComponent />
-      <div style={{ display: "flex" }}>
-        <div className="digit">{lodashExample[0][0]}</div>
-        <div className="digit1">{lodashExample[0][1]}</div>
-        <div className="digit1">7</div>
-      </div>
-    </div>
+    <Provider store={store}>
+      <ErrorBoundry>
+        <AppServiceProvider value={bookstoreService}>
+          <Router>
+            <App />
+          </Router>
+        </AppServiceProvider>
+      </ErrorBoundry>
+    </Provider>
   );
 };
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <MainComponent />,
+  document.getElementById("root")
+);

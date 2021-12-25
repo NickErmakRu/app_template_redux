@@ -1,8 +1,11 @@
 import React from "react";
 import "./app.scss";
 
-const App = () => {
-  return <div>App</div>;
+import withAppService from "../hoc";
+
+const App = ({ appService }) => {
+  console.log(appService.getBooks());
+  return <div>React-Redux App</div>;
 };
 
-export default App;
+export default withAppService()(App);
