@@ -1,11 +1,16 @@
 import React from "react";
+import { Route, Routes } from "react-router-dom";
 import "./app.scss";
 
-import withAppService from "../hoc";
+import { HomePage, CartPage } from "../pages";
 
-const App = ({ appService }) => {
-  console.log(appService.getBooks());
-  return <div>React-Redux App</div>;
+const App = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} exact />
+      <Route path="/cart" element={<CartPage />} exact />
+    </Routes>
+  );
 };
 
-export default withAppService()(App);
+export default App;
