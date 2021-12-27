@@ -6,7 +6,7 @@ export default class BookstoreService {
         title: "Гарри Поттер и Узник Азкабана",
       },
       {
-        id: 1,
+        id: 2,
         title: "Гарри Поттер и Кубок Огня",
       },
     ];
