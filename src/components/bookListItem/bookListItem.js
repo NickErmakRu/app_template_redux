@@ -2,11 +2,19 @@ import React from "react";
 import "./bookListItem.scss";
 
 const BookListItem = ({ book }) => {
-  const { title } = book;
+  const { title, price, coverImage } = book;
   return (
-    <>
-      <span>{title}</span>
-    </>
+    <div className="bookListItem">
+      <div className="bookCover">
+        <img src={coverImage} alt="coverImage" />
+      </div>
+      <div className="bookDetails">
+        <a href="#" className="bookTitle">
+          {title}
+        </a>
+        <div className="bookPrice">{price}</div>
+      </div>
+    </div>
   );
 };
 

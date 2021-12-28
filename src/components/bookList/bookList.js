@@ -17,7 +17,7 @@ const BookList = ({ books, appService, booksLoaded }) => {
   }, [appService, booksLoaded]);
 
   return (
-    <ul>
+    <ul className="bookList">
       {books.map((book) => {
         return (
           <li key={book.id}>

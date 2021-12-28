@@ -6,10 +6,12 @@ import { HomePage, CartPage } from "../pages";
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} exact />
-      <Route path="/cart" element={<CartPage />} exact />
-    </Routes>
+    <main role="main" className="container">
+      <Routes>
+        <Route path="/" element={<HomePage />} exact />
+        <Route path="/cart" element={<CartPage />} exact />
+      </Routes>
+    </main>
   );
 };
 
