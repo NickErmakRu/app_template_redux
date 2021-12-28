@@ -10,7 +10,20 @@
 		img {
 			max-width: 100%;
 		}
-
 	}
 
+  .bookDetails {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    align-items: flex-start;
+
+    .bookPrice {
+      font-size: 1.4rem;
+    }
+    .bookTitle {
+      font-size: 1.2rem;
+    }
+  }
 }

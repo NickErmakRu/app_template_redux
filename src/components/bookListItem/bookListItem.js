@@ -12,7 +12,10 @@ const BookListItem = ({ book }) => {
         <a href="#" className="bookTitle">
           {title}
         </a>
-        <div className="bookPrice">{price}</div>
+        <div className="bookPrice">{price} руб.</div>
+        <button className="btn btn-info addToCart">
+          В корзину
+        </button>
       </div>
     </div>
   );
