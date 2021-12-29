@@ -2,19 +2,28 @@ import React from "react";
 import { connect } from "react-redux";
 import "./bookList.scss";
 
-import withAppService from "../hoc";
 import { booksLoaded } from "../../reduxconfig/actions";
 import { compose } from "../../utils";
+
+import withAppService from "../hoc";
 import BookListItem from "../bookListItem";
+import Spinner from "../spinner";
 
-const BookList = ({ books, appService, booksLoaded }) => {
+const BookList = ({
+  books,
+  isLoading,
+  appService,
+  booksLoaded,
+}) => {
   React.useEffect(() => {
-    // receive data
-    const data = appService.getBooks();
-
-    // dispatch action to store
-    booksLoaded(data);
+    appService.getBooks().then((data) => {
+      booksLoaded(data);
+    });
   }, [appService, booksLoaded]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <ul className="bookList">
@@ -29,9 +38,10 @@ const BookList = ({ books, appService, booksLoaded }) => {
   );
 };
 
-const mapStateToProps = ({ books }) => {
+const mapStateToProps = ({ books, isLoading }) => {
   return {
     books,
+    isLoading,
   };
 };
 
