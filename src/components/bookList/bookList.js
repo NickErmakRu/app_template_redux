@@ -10,7 +10,21 @@ import BookListItem from "../bookListItem";
 import Spinner from "../spinner";
 import ErrorIndicator from "../errorIndicator";
 
-const BookList = ({
+const BookList = ({ books }) => {
+  return (
+    <ul className="bookList">
+      {books.map((book) => {
+        return (
+          <li key={book.id}>
+            <BookListItem book={book} />
+          </li>
+        );
+      })}
+    </ul>
+  );
+};
+
+const BookListContainer = ({
   books,
   isLoading,
   error,
@@ -29,17 +43,7 @@ const BookList = ({
     return <ErrorIndicator />;
   }
 
-  return (
-    <ul className="bookList">
-      {books.map((book) => {
-        return (
-          <li key={book.id}>
-            <BookListItem book={book} />
-          </li>
-        );
-      })}
-    </ul>
-  );
+  return <BookList books={books} />;
 };
 
 const mapStateToProps = ({ books, isLoading, error }) => {
@@ -61,4 +65,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default compose(
   withAppService(),
   connect(mapStateToProps, mapDispatchToProps)
-)(BookList);
+)(BookListContainer);
