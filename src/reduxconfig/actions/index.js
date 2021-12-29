@@ -1,21 +1,33 @@
-const booksLoaded = (newBooks) => {
+const booksRequested = () => {
   return {
-    type: "BOOKS_LOADED",
-    payload: newBooks,
+    type: "FETCH_BOOKS_REQUEST",
   };
 };
 
-const booksRequested = () => {
+const booksLoaded = (newBooks) => {
   return {
-    type: "BOOKS_REQUSTED",
+    type: "FETCH_BOOKS_SUCCESS",
+    payload: newBooks,
   };
 };
 
 const booksError = (error) => {
   return {
-    type: "BOOKS_ERROR",
+    type: "FETCH_BOOKS_FAILURE",
     payload: error,
   };
 };
 
-export { booksLoaded, booksRequested, booksError };
+//внутренняя функция предназначена для компонента,
+//а внешняя - для работы в mapDispatchToProps
+const fetchBooks = (appService, dispatch) => () => {
+  dispatch(booksRequested());
+  appService
+    .getBooks()
+    .then((data) => {
+      dispatch(booksLoaded(data));
+    })
+    .catch((error) => dispatch(booksError(error)));
+};
+
+export { fetchBooks };

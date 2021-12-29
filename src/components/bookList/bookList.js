@@ -3,11 +3,7 @@ import { connect } from "react-redux";
 import { compose } from "../../utils";
 import "./bookList.scss";
 
-import {
-  booksLoaded,
-  booksRequested,
-  booksError,
-} from "../../reduxconfig/actions";
+import { fetchBooks } from "../../reduxconfig/actions";
 
 import withAppService from "../hoc";
 import BookListItem from "../bookListItem";
@@ -54,18 +50,11 @@ const mapStateToProps = ({ books, isLoading, error }) => {
   };
 };
 
+//ownProps получаем из withAppService
 const mapDispatchToProps = (dispatch, ownProps) => {
   const { appService } = ownProps;
   return {
-    fetchBooks: () => {
-      dispatch(booksRequested());
-      appService
-        .getBooks()
-        .then((data) => {
-          dispatch(booksLoaded(data));
-        })
-        .catch((error) => dispatch(booksError(error)));
-    },
+    fetchBooks: fetchBooks(appService, dispatch),
   };
 };
 
