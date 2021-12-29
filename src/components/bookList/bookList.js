@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { compose } from "../../utils";
 import "./bookList.scss";
 
 import {
@@ -7,7 +8,6 @@ import {
   booksRequested,
   booksError,
 } from "../../reduxconfig/actions";
-import { compose } from "../../utils";
 
 import withAppService from "../hoc";
 import BookListItem from "../bookListItem";
@@ -18,20 +18,12 @@ const BookList = ({
   books,
   isLoading,
   error,
-  appService,
-  booksLoaded,
-  booksRequested,
-  booksError,
+  fetchBooks,
 }) => {
+  // использовать класс ? (#141)
   React.useEffect(() => {
-    booksRequested();
-    appService
-      .getBooks()
-      .then((data) => {
-        booksLoaded(data);
-      })
-      .catch((error) => booksError(error));
-  }, [appService, booksError, booksLoaded, booksRequested]);
+    fetchBooks();
+  }, [fetchBooks]);
 
   if (isLoading) {
     return <Spinner />;
@@ -62,10 +54,19 @@ const mapStateToProps = ({ books, isLoading, error }) => {
   };
 };
 
-const mapDispatchToProps = {
-  booksLoaded,
-  booksRequested,
-  booksError,
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const { appService } = ownProps;
+  return {
+    fetchBooks: () => {
+      dispatch(booksRequested());
+      appService
+        .getBooks()
+        .then((data) => {
+          dispatch(booksLoaded(data));
+        })
+        .catch((error) => dispatch(booksError(error)));
+    },
+  };
 };
 
 export default compose(
