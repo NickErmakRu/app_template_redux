@@ -20,6 +20,7 @@ export default class BookstoreService {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(this.data);
+        // reject(new Error("Что-то не так"));
       }, 1000);
     });
   }
