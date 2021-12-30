@@ -1,6 +1,8 @@
 import React from "react";
 import "./shoppingCartTable.scss";
 
+import { connect } from "react-redux";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrash,
@@ -8,7 +10,54 @@ import {
   faMinusCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
-const ShoppingCartTable = () => {
+const ShoppingCartTable = ({
+  items,
+  total,
+  onInc,
+  onDec,
+  onDel,
+}) => {
+  const renderRow = (item, idx) => {
+    const { id, title, count, total } = item;
+    return (
+      <tr key={id}>
+        <td>{idx + 1}</td>
+        <td>{title}</td>
+        <td>{count}</td>
+        <td>{total} руб.</td>
+        <td>
+          <button
+            onClick={() => onDel(id)}
+            className="btn btn-outline-danger btn-sm"
+          >
+            <FontAwesomeIcon
+              className="cartTableIcon"
+              icon={faTrash}
+            />
+          </button>
+          <button
+            onClick={() => onDec(id)}
+            className="btn btn-outline-warning btn-sm"
+          >
+            <FontAwesomeIcon
+              className="cartTableIcon"
+              icon={faMinusCircle}
+            />
+          </button>
+          <button
+            onClick={() => onInc(id)}
+            className="btn btn-outline-success btn-sm"
+          >
+            <FontAwesomeIcon
+              className="cartTableIcon"
+              icon={faPlusCircle}
+            />
+          </button>
+        </td>
+      </tr>
+    );
+  };
+
   return (
     <div className="shoppingCartTable">
       <h2>Заказ</h2>
@@ -18,42 +67,39 @@ const ShoppingCartTable = () => {
             <th>#</th>
             <th>Наименование</th>
             <th>Количество</th>
-            <th>Цена</th>
+            <th>Стоимость</th>
             <th></th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Гарри Поттер и Узник Азкабана</td>
-            <td>2</td>
-            <td>1780 руб.</td>
-            <td>
-              <button className="btn btn-outline-danger btn-sm">
-                <FontAwesomeIcon
-                  className="cartTableIcon"
-                  icon={faTrash}
-                />
-              </button>
-              <button className="btn btn-outline-warning btn-sm">
-                <FontAwesomeIcon
-                  className="cartTableIcon"
-                  icon={faMinusCircle}
-                />
-              </button>
-              <button className="btn btn-outline-success btn-sm">
-                <FontAwesomeIcon
-                  className="cartTableIcon"
-                  icon={faPlusCircle}
-                />
-              </button>
-            </td>
-          </tr>
-        </tbody>
+        <tbody>{items.map(renderRow)}</tbody>
       </table>
-      <div className="total">К оплате: 1780 руб.</div>
+      <div className="total">К оплате: {total} руб.</div>
     </div>
   );
 };
 
-export default ShoppingCartTable;
+const mapStateToProps = (state) => {
+  return {
+    items: state.cartItems,
+    total: state.orderTotal,
+  };
+};
+
+const mapDispatchToProps = () => {
+  return {
+    onInc: (id) => {
+      console.log(`Increase ${id}`);
+    },
+    onDec: (id) => {
+      console.log(`Decrease ${id}`);
+    },
+    onDel: (id) => {
+      console.log(`Delete ${id}`);
+    },
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ShoppingCartTable);
