@@ -18,6 +18,13 @@ const booksError = (error) => {
   };
 };
 
+const bookAddedToCart = (bookId) => {
+  return {
+    type: "BOOK_ADDED_TO_CART",
+    payload: bookId,
+  };
+};
+
 //внутренняя функция предназначена для компонента,
 //а внешняя - для работы в mapDispatchToProps
 const fetchBooks = (appService, dispatch) => () => {
@@ -30,4 +37,4 @@ const fetchBooks = (appService, dispatch) => () => {
     .catch((error) => dispatch(booksError(error)));
 };
 
-export { fetchBooks };
+export { fetchBooks, bookAddedToCart };
