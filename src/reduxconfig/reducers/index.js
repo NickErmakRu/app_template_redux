@@ -11,6 +11,13 @@ const updateCartItems = (cartItems, item, idx) => {
     return [...cartItems, item];
   }
 
+  if (item.count === 0) {
+    return [
+      ...cartItems.slice(0, idx),
+      ...cartItems.slice(idx + 1),
+    ];
+  }
+
   return [
     ...cartItems.slice(0, idx),
     item,
@@ -18,7 +25,7 @@ const updateCartItems = (cartItems, item, idx) => {
   ];
 };
 
-const updateCartItem = (book, item = {}) => {
+const updateCartItem = (book, item = {}, quantity) => {
   const {
     id = book.id,
     count = 0,
@@ -29,8 +36,28 @@ const updateCartItem = (book, item = {}) => {
   return {
     id,
     title,
-    count: count + 1,
-    total: total + book.price,
+    count: count + quantity,
+    total: total + book.price * quantity,
+  };
+};
+
+const updateOrder = (state, bookId, quantity) => {
+  const { books, cartItems } = state;
+
+  const book = books.find((book) => book.id === bookId);
+  const itemId = cartItems.findIndex(
+    (item) => item.id === bookId
+  );
+  const item = cartItems[itemId];
+  const newItem = updateCartItem(book, item, quantity);
+
+  return {
+    ...state,
+    cartItems: updateCartItems(
+      state.cartItems,
+      newItem,
+      itemId
+    ),
   };
 };
 
@@ -58,24 +85,20 @@ const reducer = (state = initialState, action) => {
         error: action.payload,
       };
     case "BOOK_ADDED_TO_CART": {
-      const bookId = action.payload;
-      const book = state.books.find(
-        (book) => book.id === bookId
+      return updateOrder(state, action.payload, 1);
+    }
+    case "BOOK_REMOVED_FROM_CART": {
+      return updateOrder(state, action.payload, -1);
+    }
+    case "ALL_BOOKS_REMOVED_FROM_CART": {
+      const item = state.cartItems.find(
+        (book) => book.id === action.payload
       );
-      const itemId = state.cartItems.findIndex(
-        (item) => item.id === bookId
+      return updateOrder(
+        state,
+        action.payload,
+        -item.count
       );
-      const item = state.cartItems[itemId];
-      const newItem = updateCartItem(book, item);
-
-      return {
-        ...state,
-        cartItems: updateCartItems(
-          state.cartItems,
-          newItem,
-          itemId
-        ),
-      };
     }
     default:
       return state;

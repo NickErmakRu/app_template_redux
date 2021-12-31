@@ -25,6 +25,20 @@ const bookAddedToCart = (bookId) => {
   };
 };
 
+const bookRemovedFromCart = (bookId) => {
+  return {
+    type: "BOOK_REMOVED_FROM_CART",
+    payload: bookId,
+  };
+};
+
+const allBooksRemovedFromCart = (bookId) => {
+  return {
+    type: "ALL_BOOKS_REMOVED_FROM_CART",
+    payload: bookId,
+  };
+};
+
 //внутренняя функция предназначена для компонента,
 //а внешняя - для работы в mapDispatchToProps
 const fetchBooks = (appService, dispatch) => () => {
@@ -37,4 +51,9 @@ const fetchBooks = (appService, dispatch) => () => {
     .catch((error) => dispatch(booksError(error)));
 };
 
-export { fetchBooks, bookAddedToCart };
+export {
+  fetchBooks,
+  bookAddedToCart,
+  bookRemovedFromCart,
+  allBooksRemovedFromCart,
+};

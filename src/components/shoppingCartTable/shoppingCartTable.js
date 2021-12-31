@@ -3,6 +3,12 @@ import "./shoppingCartTable.scss";
 
 import { connect } from "react-redux";
 
+import {
+  bookAddedToCart,
+  bookRemovedFromCart,
+  allBooksRemovedFromCart,
+} from "../../reduxconfig/actions";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrash,
@@ -85,18 +91,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = () => {
-  return {
-    onInc: (id) => {
-      console.log(`Increase ${id}`);
-    },
-    onDec: (id) => {
-      console.log(`Decrease ${id}`);
-    },
-    onDel: (id) => {
-      console.log(`Delete ${id}`);
-    },
-  };
+const mapDispatchToProps = {
+  onInc: bookAddedToCart,
+  onDec: bookRemovedFromCart,
+  onDel: allBooksRemovedFromCart,
 };
 
 export default connect(
